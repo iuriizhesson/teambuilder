@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<style>
+table, th, td {
+  border:1px solid black;
+}
+
+td, th, tr {
+  text-align: center;
+  height: 300px;
+  font-size:50px;
+}
+</style>
+<body>
+<script>
+function createArray() {
+  return new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+}
+
+slots = createArray();
+
+var yellow = "#FDB913"
+var green = "#006A44"
+var red = "#C1272D"
+
+function addPlayer() {
+  if (slots.length == 0) {
+    slots = createArray();
+    slots.forEach(
+      (element) =>
+        (document.getElementById("teams").getElementsByTagName("td")[
+          element
+        ].style.backgroundColor = "white")
+    );
+    return;
+  }
+  var index = Math.floor(Math.random() * slots.length);
+  var value = slots[index];
+  var column = value % 3;
+  var color = yellow;
+  if (column == 1) {
+    color = green;
+  } else if (column == 2) {
+    color = red;
+  }
+  document.getElementById("teams").getElementsByTagName("td")[
+    value
+  ].style.backgroundColor = color;
+  slots.splice(index, 1);
+}
+</script>
+
+<table id = "teams" style="width:100%">
+  <tr>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+  </tr>
+</table>
+
+<button type="button" style="font-size:50px;height:400px;width:100%" onclick="addPlayer()">+</button>
+
+</body>
+</html>
