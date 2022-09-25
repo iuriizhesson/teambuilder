@@ -36,7 +36,7 @@
         function createArray() {
             return new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
         }
-        // team-functions-begin
+
         function getTeamNumber(index) {
             return index % 3 + 1;
         }
@@ -52,10 +52,9 @@
                     return "#C1272D"
             }
         }
-        // team-functions-end
-        var slots = createArray();
-        var lastLadyTeamNumber = 0;
-        // add-player-function-begin
+
+        slots = createArray();
+
         function addPlayer(isLady) {
             if (slots.length == 0) {
                 slots = createArray();
@@ -67,24 +66,14 @@
                 );
                 return;
             }
-            var slotsIndex = Math.floor(Math.random() * slots.length);
-            var teamsIndex = slots[slotsIndex];
-            var teamNumber = getTeamNumber(teamsIndex);
-            if ((teamNumber == lastLadyTeamNumber) && (slotsIndex > 0)) {
-                --slotsIndex;
-                teamsIndex = slots[slotsIndex];
-                teamNumber = getTeamNumber(teamsIndex);
-            }
-            var color = getTeamColor(teamsIndex);
+            var index = Math.floor(Math.random() * slots.length);
+            var value = slots[index];
+            var color = getTeamColor(value);
             document.getElementById("teams").getElementsByTagName("td")[
-                teamsIndex
+                value
             ].style.backgroundColor = color;
-            slots.splice(slotsIndex, 1);
-            if (isLady) {
-                lastLadyTeamNumber = teamNumber;
-            }
+            slots.splice(index, 1);
         }
-        // add-player-function-end
     </script>
 
     <table id="teams" style="width:100%">

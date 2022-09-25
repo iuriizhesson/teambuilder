@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>How to fix height of table tr?</title>
+	
+	<style>
+		table {
+			margin-left: auto;
+			margin-right: auto;
+			font-size: 50px;
+			width: 100%;
+			table-layout:fixed;
+		}
+		td {
+			border: 1px solid black;
+			text-align: center;
+			padding: 10px;
+		}
+	</style>
+    <script>
+        // team-functions-begin
+        function getTeamNumber(index) {
+            return index % 3 + 1;
+        }
+
+        function getTeamColor(index) {
+            switch (getTeamNumber(index)) {
+                case 1:
+                    return "#FDB913"
+                case 2:
+                    return "#006A44"
+                case 3:
+                default:
+                    return "#C1272D"
+            }
+        }
+        // team-functions-end
+    </script>
+</head>
+<body>
+
+<table>
+
+<!-- row with fixed height-->
+<tr>
+	<td>Height of this row</td>
+	<td>Geeks for Geeks</td>
+	<td>Geeks for Geeks</td>
+</tr>
+
+<!-- row without fixed height-->
+<tr>
+	<td>Height of this row</td>
+	<td>Geeks for Geeks</td>
+	<td>Geeks for Geeks</td>
+</tr>
+</table>
+
+</body>
+</html>
