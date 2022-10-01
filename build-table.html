@@ -94,7 +94,6 @@
         <button class="rightButton" onclick="addPlayer(gentlemanPlayers)">Gentleman</button>
     </div>
     <br />
-    <br />
     <table id="playersTable">
         <!-- here goes our data! -->
     </table>
@@ -159,10 +158,8 @@
         const numLadies = parseInt(document.getElementById('ladies').value);
         const numGentlemen = numAll - numLadies;
         clearPlayersTable();
-        ladyPlayers = createPlayersArray(numLadies, 'L');
-        addPlayersToTable(ladyPlayers);
-        gentlemanPlayers = createPlayersArray(numGentlemen, 'G', ladyPlayers.length);
-        addPlayersToTable(gentlemanPlayers);
+        addPlayersToTable(ladyPlayers = createPlayersArray(numLadies, 'L'));
+        addPlayersToTable(gentlemanPlayers = createPlayersArray(numGentlemen, 'G', ladyPlayers.length));
     }
 
     function clearPlayersTable() {
