@@ -1,0 +1,213 @@
+<!Doctype html>
+<html>
+
+<head>
+    <style>
+        * {
+            font-family: Tahoma, sans-serif;
+        }
+
+        .leftButton {
+            color: black;
+            font-size: 75px;
+            width: 48%;
+            padding: 42px 32px;
+            margin-right: 10px;
+            
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .rightButton {
+            color: black;
+            font-size: 75px;
+            width: 48%;
+            padding: 42px 32px;
+            text-align: center;
+        }
+
+        label {
+            color: black;
+            font-size: 75px;
+            margin-left: 16px;
+            margin-bottom: 10px;
+        }
+
+        select {
+            background-color: lightgray;
+            color: black;
+            font-size: 75px;
+            margin-left: 16px;
+            margin-bottom: 10px;
+            text-align: right;
+            width: 20%;
+        }
+
+        th,
+        td {
+            font-size: 75px;
+            width: 33%;
+            table-layout: fixed;
+            border: 2px solid black;
+            border-collapse: collapse;
+            border-spacing: 8px;
+            padding: 60px 130px;
+            text-align: center;
+        }
+
+        table {
+            border-spacing: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="all">All</label>
+    <select id="all" name="all" onchange="allChanged(this)">
+        <option value="0">0</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+    </select>
+    <label for="ladies">Ladies</label>
+    <select id="ladies" name="ladies" onchange="ladiesChanged(this)">
+        <option value="0">0</option>
+    </select>
+    <br />
+    <label for="teams">Teams</label>
+    <select id="teams" name="teams" onchange="teamsChanged(this)">
+        <option value="3">3</option>
+        <option value="2">2</option>
+    </select>
+    <br />
+    <br />
+    <div style="text-align: center">
+        <button class="leftButton" onclick="addPlayer(ladyPlayers)">Lady</button>
+        <button class="rightButton" onclick="addPlayer(gentlemanPlayers)">Gentleman</button>
+    </div>
+    <br />
+    <br />
+    <table id="playersTable">
+        <!-- here goes our data! -->
+    </table>
+</body>
+<!-- <script src="build-table.js"></script> -->
+<script>
+    function allChanged(allSelect) {
+        const ladiesSelect = document.getElementById('ladies');
+        removeOptions(ladiesSelect);
+        addOptions(ladiesSelect, allSelect.value)
+        updatePlayersTable();
+    }
+
+    function removeOptions(select) {
+        while (select.options.length > 1) {
+            select.remove(select.options.length - 1);
+        }
+    }
+
+    function addOptions(select, upTo) {
+        for (let i = 1; i <= parseInt(upTo); ++i) {
+            var option = document.createElement("option");
+            option.text = i;
+            option.value = i;
+            select.add(option);
+        }
+    }
+
+    function ladiesChanged() {
+        updatePlayersTable();
+    }
+
+    let numTeams = 3;
+
+    function teamsChanged(select) {
+        numTeams = parseInt(select.value);
+        updatePlayersTable();
+    }
+
+    var ladyPlayers = []
+    var gentlemanPlayers = []
+
+    function addPlayer(players) {
+        if ((gentlemanPlayers.length <= 0) && (ladyPlayers.length <= 0)) {
+            if (getPlayersTable().innerHTML == "") {
+                updatePlayersTable();
+            } else {
+                clearPlayersTable();
+            }
+            return;
+        }
+        if (players.length <= 0) {
+            return;
+        }
+        const index = Math.floor(Math.random() * players.length);
+        players[index].cell.style.backgroundColor = getTeamColor(players[index].teamIndex);
+        players.splice(index, 1);
+    }
+
+    function updatePlayersTable() {
+        const numAll = parseInt(document.getElementById('all').value);
+        const numLadies = parseInt(document.getElementById('ladies').value);
+        const numGentlemen = numAll - numLadies;
+        clearPlayersTable();
+        ladyPlayers = createPlayersArray(numLadies, 'L');
+        addPlayersToTable(ladyPlayers);
+        gentlemanPlayers = createPlayersArray(numGentlemen, 'G', ladyPlayers.length);
+        addPlayersToTable(gentlemanPlayers);
+    }
+
+    function clearPlayersTable() {
+        getPlayersTable().innerHTML = "";
+    }
+
+    function createPlayersArray(numPlayers, cellLabel, startIndex = 0) {
+        return Array(numPlayers).fill({ cellLabel: cellLabel }).map((element, index) => {
+            return { cellLabel: element.cellLabel, index: startIndex + index };
+        });
+    }
+
+    function getTeamColor(teamIndex) {
+        switch (teamIndex) {
+            case 0:
+                return "#FDB913"
+            case 1:
+                return "#006A44"
+            case 2:
+            default:
+                return "#C1272D"
+        }
+    }
+
+    function addPlayersToTable(players) {
+        let table = getPlayersTable();
+        players.forEach((player) => {
+            let teamIndex = player.index % numTeams;
+            var row;
+            if (teamIndex == 0) {
+                row = table.insertRow();
+            } else {
+                row = table.rows.item(table.rows.length - 1);
+            }
+            let cell = row.insertCell();
+            cell.appendChild(document.createTextNode(player.cellLabel));
+            player.cell = cell;
+            player.teamIndex = teamIndex;
+        });
+    }
+
+    function getPlayersTable() {
+        return document.getElementById("playersTable")
+    }
+
+</script>
+
+</html>
