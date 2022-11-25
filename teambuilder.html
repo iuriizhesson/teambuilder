@@ -87,7 +87,6 @@
 		<option value="16">16</option>
 		<option value="17">17</option>
 		<option value="18">18</option>
-		
     </select>
     <label for="ladies">Ladies</label>
     <select id="ladies" name="ladies" onchange="ladiesChanged()">
@@ -150,11 +149,8 @@
 
     function addPlayer(players) {
         if ((gentlemanPlayers.length <= 0) && (ladyPlayers.length <= 0)) {
-            if (getPlayersTable().innerHTML == "") {
-                updatePlayersTable();
-            } else {
-                clearPlayersTable();
-            }
+            clearPlayersTable();
+            updatePlayersTable();
             return;
         }
         if (players.length <= 0) {
