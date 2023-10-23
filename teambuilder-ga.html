@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            font-size: 35px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td style="vertical-align: top;">
+                <textarea id="playerNames" rows="20"></textarea>
+            </td>
+            <td style="vertical-align: top;">
+                <table id="teams"></table>
+            </td>
+        </tr>
+    </table>
+    <label for="teams">Teams</label>
+    <select id="numTeams" onchange="teamsChanged(this)">
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select>
+    <br>
+    <br>
+    <button class="button" style="width: 15%;" onclick="formTeams()">Go</button>
+
+    <script>
+        let numTeams = parseInt(document.getElementById('numTeams').value);
+
+        function teamsChanged(select) {
+            numTeams = parseInt(select.value);
+            formTeams();
+        }
+
+        function formTeams() {
+            let inputString = getPlayerNamesInput().value.trim()
+            if (!inputString) {
+                return
+            }
+            inputString = inputString.replace(/[\r\n\t]+/gm, "\n").replace(/[^a-z0-9\n ]/gim, "").replace(/ +/gm, " ");
+            const playersUnique = new Map(inputString.split(/\n+/).map(s => [s.toLowerCase(), s]));
+            inputString = ""
+            for (const name of playersUnique.values()) {
+                inputString += name + "\n";
+            }
+            getPlayerNamesInput().value = inputString;
+            const teamSize = Math.min(Math.max(Math.trunc((playersUnique.size + 1) / numTeams), 1), 6);
+            let table = document.getElementById("teams");
+            table.innerHTML = "";
+            let index = 0;
+            for (const name of shuffleArray(Array.from(playersUnique.values()))) {
+                var row = table.insertRow();
+                let cell = row.insertCell();
+                cell.appendChild(document.createTextNode(integerToString(1 + index) + " " + integerToString(Math.min(3, Math.trunc(index / teamSize) + 1,)) + " " + name));
+                ++index;
+            }
+        }
+
+        function getPlayerNamesInput() {
+            return document.getElementById("playerNames")
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function integerToString(value) {
+            return ('00' + value).slice(-2);
+        }
+    </script>
+
+</body>
+
+</html>
